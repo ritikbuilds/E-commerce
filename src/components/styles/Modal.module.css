@@ -1,0 +1,23 @@
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5)
+}
+.modalcontent{
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 1280px;
+    width: 95%;
+    max-height: 700px;
+    height: 100%;
+    border-radius: 1rem;
+    background: #fff;
+    z-index: 2;
+    overflow-y: auto;
+}
