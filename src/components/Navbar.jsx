@@ -53,7 +53,7 @@ function Navbar({ openModal }) {
         <img src={logo} alt="logo" className="hidden md:block" />
         <img src={mobileLogo} alt="logo" className="block md:hidden" />
       </div>
-      <form className="flex md:w-[40rem] w-[20rem] rounded-lg" onSubmit={handleSearch} autoComplete="off">
+      <form className="flex w-[75%] bg-red-600 sm:w-[40rem] md:w-[40rem] lg:w-[40rem]  rounded-lg" onSubmit={handleSearch} autoComplete="off">
         <input
           name="search"
           type="text"
