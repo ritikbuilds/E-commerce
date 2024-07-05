@@ -57,7 +57,7 @@ function Navbar({ openModal }) {
         <input
           name="search"
           type="text"
-          className="p-2 flex-1 rounded-l-lg outline-none w-[12rem] sm:w-full"
+          className="p-2 flex-1 text-sm sm:text-md rounded-l-lg outline-none w-[12rem] sm:w-full"
           placeholder="Search Products here"
           value={searchValue}
           onChange={(e) => {
