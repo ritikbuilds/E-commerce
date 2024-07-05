@@ -48,7 +48,7 @@ function Navbar({ openModal }) {
   },0)
 
   return (
-    <nav className="w-full fixed z-100 bg-black lg:p-6 py-6 px-2 flex left-0 top-0 justify-center gap-5 lg:gap-0 lg:justify-between items-center">
+    <nav className="w-full fixed z-100 bg-black lg:p-6 py-6 px-2 flex left-0 top-0 gap-5 lg:gap-0 justify-center lg:justify-between items-center">
       <div className="w-[2rem] md:w-[5rem] lg:w-[8rem] cursor-pointer" onClick={redirectToHome}>
         <img src={logo} alt="logo" className="hidden md:block" />
         <img src={mobileLogo} alt="logo" className="block md:hidden" />

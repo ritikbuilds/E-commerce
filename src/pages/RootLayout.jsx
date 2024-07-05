@@ -24,7 +24,7 @@ function RootLayout() {
       setModalState(false);
     }
   return (
-    <>
+    <section className='overflow-x-hidden'>
        {modalState && (
         <Modal closeModal={closeModal}>
           <Cart closeModal={closeModal}/>
@@ -32,7 +32,7 @@ function RootLayout() {
       )}
       <Navbar openModal={openModal} />
       <Outlet/>
-    </>
+    </section>
   )
 }
 
