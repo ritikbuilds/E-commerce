@@ -57,7 +57,7 @@ function Navbar({ openModal }) {
         <input
           name="search"
           type="text"
-          className="p-2 flex-1 rounded-l-lg outline-none w-[10rem] sm:w-full"
+          className="p-2 flex-1 rounded-l-lg outline-none w-[12rem] sm:w-full"
           placeholder="Search Products here"
           value={searchValue}
           onChange={(e) => {
@@ -82,7 +82,7 @@ function Navbar({ openModal }) {
         <span className="text-white md:text-sm lg:text-md">Cart</span>
       </button>
       </div>
-      <IoIosMenu onClick={handleMenu} color="white" size="4rem" className="block md:hidden cursor-pointer"/>
+      <IoIosMenu onClick={handleMenu} color="white" size="3rem" className="block md:hidden cursor-pointer"/>
     </nav>
   );
 }
