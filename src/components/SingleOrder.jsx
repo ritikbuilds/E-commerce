@@ -1,35 +1,78 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import buyAgain from "../assets/buy-again.png";
 import { addItemToCart } from "./features/cart/cartSlice";
-import { useDispatch } from "react-redux";
-import { addDays,format } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
+import { addDays, format } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 
 const currentDate = new Date();
-const today = format(currentDate, "EEEE, MMMM d", { locale: enUS })
+const today = format(currentDate, "EEEE, MMMM d", { locale: enUS });
 const uTenDaysLater = addDays(currentDate, 10);
-const tenDaysLater = format(uTenDaysLater, "EEEE, MMMM d", { locale: enUS })
+const tenDaysLater = format(uTenDaysLater, "EEEE, MMMM d", { locale: enUS });
 
-function SingleOrder({ id, img, title, quantity,price,arrivingOn,orderPlaced,orderId}) {
+function SingleOrder({
+  id,
+  img,
+  title,
+  quantity,
+  price,
+  arrivingOn,
+  orderPlaced,
+  orderId,
+}) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cart = useSelector((state)=>state.cart)
+  const [itemAdded, setItemAdded] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const buyAgainRef = useRef();
 
   const newItem = {
-    id:id,
-    img:img,
-    title:title,
-    quantity:1,
-    price:price,
-    arrivingOn:tenDaysLater,
-    orderPlaced:today,
-    orderId:nanoid()
+    id: id,
+    img: img,
+    title: title,
+    quantity: 1,
+    price: price,
+    arrivingOn: tenDaysLater,
+    orderPlaced: today,
+    orderId: nanoid(),
+  };
+
+  useEffect(() => {
+    if (itemAdded) {
+      let timeOutID;
+      function addItem() {
+        const existingItem = cart.find((item) => item.id === id);
+        if (existingItem) {
+          alert("Item already added to cart")
+          setItemAdded(false)
+          setIsAnimating(false)
+          return;
+        }
+        dispatch(addItemToCart({ newItem }));
+        buyAgainRef.current.textContent = "Added";
+        timeOutID = setTimeout(() => {
+          buyAgainRef.current.textContent = "Buy It Again";
+          setIsAnimating(false);
+          setItemAdded(false);
+        }, 1000);
+      }
+      addItem();
+      return () => {
+        clearTimeout(timeOutID);
+      };
+    }
+  }, [itemAdded, dispatch]);
+
+  function preAddItem() {
+    setIsAnimating(true);
+    setItemAdded(true);
   }
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  function handleTrackPackage(){
-    navigate(`/trackorder?orderId=${orderId}`)
+  function handleTrackPackage() {
+    navigate(`/trackorder?orderId=${orderId}`);
   }
 
   return (
@@ -48,17 +91,19 @@ function SingleOrder({ id, img, title, quantity,price,arrivingOn,orderPlaced,ord
           <p className=" text-sm md:text-md">Arriving on : {arrivingOn}</p>
           <p className=" text-sm md:text-md">Quantity:{quantity}</p>
           <button
-            onClick={() => {
-              dispatch(addItemToCart({newItem}));
-            }}
-            className="flex mt-2 items-center gap-2 py-1 md:px-2 px-1 bg-yellow-400 hover:bg-yellow-500 transition-all md:text-md whitespace-nowrap md:whitespace-normal text-sm rounded-xl"
+            onClick={preAddItem}
+            disabled={isAnimating}
+            className="flex mt-2 items-center gap-2 py-1 md:px-2 px-1 bg-yellow-400 hover:bg-yellow-500 transition-all md:text-md w-fit whitespace-nowrap md:whitespace-normal text-sm rounded-xl"
           >
             <img src={buyAgain} alt="icon" className="w-[2rem]" />
-            <p className="md:text-md text-sm">Buy It Again</p>
+            <p ref={buyAgainRef} className="md:text-md text-sm">Buy It Again</p>
           </button>
         </div>
       </div>
-      <button onClick={handleTrackPackage} className="px-5 py-2 md:text-md mt-[1rem] md:mt-[0] text-sm bg-[#f1efef] w-full sm:w-fit md:w-fit hover:bg-[#e4e2e2] transition-all whitespace-nowrap rounded-md">
+      <button
+        onClick={handleTrackPackage}
+        className="px-5 py-2 md:text-md mt-[1rem] md:mt-[0] text-sm bg-[#f1efef] w-full sm:w-fit md:w-fit hover:bg-[#e4e2e2] transition-all whitespace-nowrap rounded-md"
+      >
         Track Package
       </button>
     </div>
