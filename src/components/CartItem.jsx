@@ -4,7 +4,7 @@ import {
   removeItemFromCart,
   increaseQty,
   decreaseQty,
-  setArrivingOn
+  setArrivingOn,
 } from "./features/cart/cartSlice";
 import { MdDeleteOutline } from "react-icons/md";
 import { format, addDays } from "date-fns";
@@ -22,7 +22,7 @@ const fourDaysLater = format(uFourDaysLater, "EEEE, MMMM d", { locale: enUS });
 const uTenDaysLater = addDays(currentDate, 10);
 const tenDaysLater = format(uTenDaysLater, "EEEE, MMMM d", { locale: enUS });
 
-function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
+function CartItem({ img, id, title, price, quantity, handleShippingCharges }) {
   const [selectedOption, setSelectedOption] = useState(tenDaysLater);
   const [itemShippingCharges, setItemShippingCharges] = useState(0);
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
         <div className="flex gap-2 p-[1rem] justify-between flex-1">
           <div className="flex flex-col gap-3 flex-1">
             <p className="text-sm lg:text-md">{title}</p>
-            <p  className="text-sm lg:text-md">
+            <p className="text-sm lg:text-md">
               {price} x {quantity} = ${price * quantity}
             </p>
             <div className="flex gap-2 items-center">
@@ -73,6 +73,7 @@ function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
             <button
               className="px-3 text-sm lg:py-2 py-[0.5rem] lg:text-md lg:m-1 bg-slate-200 rounded-full flex gap-1 items-center w-fit hover:bg-red-400 transition"
               onClick={() => {
+                handleShippingCharges(-itemShippingCharges);
                 dispatch(removeItemFromCart({ id }));
               }}
             >
@@ -80,7 +81,7 @@ function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
             </button>
           </div>
           <div className="flex flex-col gap-3">
-            <p  className="text-sm font-semibold">Choose a delivery option:</p>
+            <p className="text-sm font-semibold">Choose a delivery option:</p>
             <div className="flex gap-2">
               <input
                 type="radio"
@@ -90,7 +91,7 @@ function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
                 id={`radio-${id}-1`}
                 onChange={(e) => {
                   updateShippingCharges(0);
-                  dispatch(setArrivingOn({id:id,arrivingOn:tenDaysLater}))
+                  dispatch(setArrivingOn({ id: id, arrivingOn: tenDaysLater }));
                   setSelectedOption(e.target.value);
                 }}
               />
@@ -118,7 +119,9 @@ function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
                 id={`radio-${id}-2`}
                 onChange={(e) => {
                   updateShippingCharges(4.99);
-                  dispatch(setArrivingOn({id:id,arrivingOn:fourDaysLater}))
+                  dispatch(
+                    setArrivingOn({ id: id, arrivingOn: fourDaysLater })
+                  );
                   setSelectedOption(e.target.value);
                 }}
               />
@@ -146,7 +149,7 @@ function CartItem({ img, id, title, price, quantity, handleShippingCharges}) {
                 id={`radio-${id}-3`}
                 onChange={(e) => {
                   updateShippingCharges(9.99);
-                  dispatch(setArrivingOn({id:id,arrivingOn:oneDayLater}))
+                  dispatch(setArrivingOn({ id: id, arrivingOn: oneDayLater }));
                   setSelectedOption(e.target.value);
                 }}
               />
